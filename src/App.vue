@@ -1,9 +1,14 @@
 <script >
+import {ref} from 'vue'
 import HelloWorld from './components/HelloWorld.vue'
 import MyMap from './components/MyMap.vue'
-import leaflet from "leaflet"
+import leaflet, { map, marker } from "leaflet"
 import { onMounted } from '@vue/runtime-core'
 import Navbar from './components/Navbar.vue'
+import equipment from '../data/equipment.json'
+import equipmentPositionHistory from '../data/equipmentPositionHistory.json'
+import equipmentState from '../data/equipmentState.json'
+import equipmentStateHistory from '../data/equipmentStateHistory.json'
 
 export default {
   name: 'App',
@@ -14,11 +19,18 @@ export default {
   
 },
 
+
     setup() {
+      
+
+      const selected = ref('')
       let mymap;
 
       onMounted(() => {
-        mymap = leaflet.map('mapid').setView([-19.126536, -45.947756], 13);
+        mymap = leaflet.map('mapid').setView([-19.126536, -45.947756], 8);
+        mymap.setZoom(10)
+    
+
 
       leaflet
         .tileLayer(
@@ -35,19 +47,98 @@ export default {
           }
         )
         .addTo(mymap);
+
+    var equipament = leaflet.icon({
+      iconUrl: "../public/equipament-ok.png",
+      shadowUrl: '../public/equipament-shadow.png',
+
+      iconSize:     [40, 40], // size of the icon
+      shadowSize:   [40, 40], // size of the shadow
+      iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+      shadowAnchor: [10, 97],  // the same for the shadow
+      popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
-    },
+
+
+    equipment.forEach(element => {
+      var state = equipmentState.find((current) => current.id == equipmentStateHistory.find((state) => state.equipmentId == element.id).states[0].equipmentStateId).name
+      var icon = null
+      switch(state) {
+        case "Parado":
+          icon = leaflet.icon({
+            iconUrl: "../public/equipament-stop.png",
+            shadowUrl: '../public/equipament-shadow.png',
+
+            iconSize:     [40, 40], // size of the icon
+            shadowSize:   [40, 40], // size of the shadow
+            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+            shadowAnchor: [10, 97],  // the same for the shadow
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+          });
+
+            var descrition = "Este equipamento está parado no momento"
+          break
+
+        case "Operando":
+          icon = leaflet.icon({
+            iconUrl: "../public/equipament-ok.png",
+            shadowUrl: '../public/equipament-shadow.png',
+
+            iconSize:     [40, 40], // size of the icon
+            shadowSize:   [40, 40], // size of the shadow
+            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+            shadowAnchor: [10, 97],  // the same for the shadow
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+          });
+
+          var descrition = "Este equipamento está operando"
+          break
+
+        case "Manutenção":
+          icon = leaflet.icon({
+            iconUrl: "../public/equipament-maintenance.png",
+            shadowUrl: '../public/equipament-shadow.png',
+
+            iconSize:     [40, 40], // size of the icon
+            shadowSize:   [40, 40], // size of the shadow
+            iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+            shadowAnchor: [10, 97],  // the same for the shadow
+            popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+          });
+
+          var descrition = "Este equipamento está em manutenção"
+          break
+
+      }
+      leaflet.marker([equipmentPositionHistory.find((current) => element.id == current.equipmentId).positions[0].lat, equipmentPositionHistory.find((current) => element.id == current.equipmentId).positions[0].lon], {icon: icon}).addTo(mymap).on('click', () => selected.value = element.id)
+        .bindPopup(descrition)
+        .on('mouseover', function (e) {
+            this.openPopup();
+        })
+        .on('mouseout', function (e) {
+            this.closePopup();
+        });
+    });
+  
+
+    });
+    return {selected}
   }
+  
+}
+
+
 
 </script>
 
 
 <template>
    <Navbar />
-  <div class="pt-28 grid gridzada sm:grid-cols-1 md:grid-cols-1 gap-10 bg-green-50">
+
+  <div class="w-screen h-screen pt-28 grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-1 gap-10 bg-[url('../background.png')]  bg-slate-900 overflow-hidden">
    
-    <MyMap class="g2"/>
-    <HelloWorld/>
+    <MyMap class="col-span-2"/>
+    <HelloWorld :selected="selected"/>
   </div>
   
   

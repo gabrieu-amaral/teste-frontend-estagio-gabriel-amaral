@@ -1,7 +1,22 @@
-# Vue 3 + Vite
+## Sobre meu teste
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+Olá, decidi fazer um teste com Vue, por ser uma ferramenta que eu já tive alguns projetos, embora também já tenha testado algumas coisas no react, achei o Vue mais simples. Minha maior dificuldade foi a parte de JavaScript, meu ponto forte são as interfaces visuais, por eu também ser designer, é a parte mais divertida para mim. Por isso tive um pouco de dificuldade, de integrar os arrays e construir funcionalidades lógicas que exibissem a ultima localização dos equipamentos e clickar neles e aparecer seu histórico.
 
-## Recommended IDE Setup
+Definitivamente essa parte das funcionalidade foi onde passei a maior parte do tempo, nunca tinha feito algo assim antes então foram muitas horas pesquisando e aprendendo sobre. E isso tem muito a ver comigo. Estou migrando para a área de desenvolvimento de software e tem sido muito desafiador, mas eu gosto da resolução de problemas então estou sempre pesquisando conteúdos e me superando. Aprendo rápido e sou bem comunicativo, sempre peço ajuda quando preciso e isso me poupa tempo.
 
-- [VS Code](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar)
+
+## Tecnologias 🧪
+
+- vue 🟢
+- vite ⚡
+- Tailwind 🌊
+- JavaScript 📝
+- leaflet 🗺
+
+## ⚙️ Como executar
+
+```sh
+$ cd web
+$ npm install
+$ npm run dev
+```

@@ -160,7 +160,7 @@ export default {
 
 </script>
 
-Componentes Vue ⬇
+<!-- Componentes Vue ⬇ -->
 
 <template>
    <Navbar />

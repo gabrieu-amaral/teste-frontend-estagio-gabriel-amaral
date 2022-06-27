@@ -37,8 +37,8 @@ export default{
 <template>
 
 
-    <div id="scroll" class="h-[520px] w-[500px] p-16 rounded-2xl shadow-2xl bg-gradient-to-r from-blue-800 to-blue-700 overflow-y-scroll">
-      <h1 class="text-3xl font-semibold text-gray-100">{{equipment.find((equipmentName) => equipmentName.id == currentEquipment) ? equipment.find((equipmentName) => equipmentName.id == currentEquipment).name : "Selecione um equipamento"}}</h1>
+    <div id="scroll" class="h-[520px] w-full p-16 rounded-2xl shadow-2xl bg-gradient-to-r from-blue-800 to-blue-600 overflow-y-scroll">
+      <h2 class="lg:text-4xl text-2xl font-semibold text-blue-200">{{equipment.find((equipmentName) => equipmentName.id == currentEquipment) ? equipment.find((equipmentName) => equipmentName.id == currentEquipment).name : "Selecione um equipamento"}}</h2>
       <p class="text-xl text-gray-400 pb-4">{{equipment.find((equipmentName) => equipmentName.id == currentEquipment) ? "Histórico do equipamento" : ""}}</p>
       <img src="equipmentDefault.png" alt="" v-if="!equipment.find((equipmentName) => equipmentName.id == currentEquipment)">
 

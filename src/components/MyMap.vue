@@ -1,5 +1,5 @@
 <template>
-  <div id="mapid" class="h-[520px] w-auto lg:ml-12 sm:ml-0 shadow-lg rounded-2xl"></div>
+  <div id="mapid" class="lg:h-[520px] md:h-[400px] h-[300px] w-full shadow-lg rounded-2xl "></div>
  
 </template>
 

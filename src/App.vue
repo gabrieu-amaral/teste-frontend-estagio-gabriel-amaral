@@ -10,27 +10,24 @@ import equipmentPositionHistory from '../data/equipmentPositionHistory.json'
 import equipmentState from '../data/equipmentState.json'
 import equipmentStateHistory from '../data/equipmentStateHistory.json'
 
+
 export default {
   name: 'App',
   components: {
     MyMap,
     Navbar,
     HelloWorld,
-  
 },
 
-
+//Leaflet 🗺 , parte de JS e funcionalidades
     setup() {
-      
-
+    
       const selected = ref('')
       let mymap;
 
       onMounted(() => {
-        mymap = leaflet.map('mapid').setView([-19.126536, -45.947756], 8);
+        mymap = leaflet.map('mapid').setView([-19.056536, -45.977756], 6);
         mymap.setZoom(10)
-    
-
 
       leaflet
         .tileLayer(
@@ -39,6 +36,7 @@ export default {
             attribution:
               'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             maxZoom: 18,
+            minZoom:5,
             id: "mapbox/streets-v11",
             tileSize: 512,
             zoomOffset: -1,
@@ -59,9 +57,13 @@ export default {
       popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
     });
 
+    var parado = []
+    var operando = []
+    var manutecao = []
 
     equipment.forEach(element => {
-      var state = equipmentState.find((current) => current.id == equipmentStateHistory.find((state) => state.equipmentId == element.id).states[0].equipmentStateId).name
+      const history = equipmentStateHistory.find((state) => state.equipmentId == element.id)
+      var state = equipmentState.find((current) => current.id == history.states[history.states.length-1].equipmentStateId).name
       var icon = null
       switch(state) {
         case "Parado":
@@ -76,6 +78,7 @@ export default {
             popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
           });
 
+            var estado = "parado"
             var descrition = "Este equipamento está parado no momento"
           break
 
@@ -91,6 +94,7 @@ export default {
             popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
           });
 
+          var estado = "operando"
           var descrition = "Este equipamento está operando"
           break
 
@@ -106,11 +110,12 @@ export default {
             popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
           });
 
+          var estado = "manutecao"
           var descrition = "Este equipamento está em manutenção"
           break
-
       }
-      leaflet.marker([equipmentPositionHistory.find((current) => element.id == current.equipmentId).positions[0].lat, equipmentPositionHistory.find((current) => element.id == current.equipmentId).positions[0].lon], {icon: icon}).addTo(mymap).on('click', () => selected.value = element.id)
+
+      var marker = leaflet.marker([equipmentPositionHistory.find((current) => element.id == current.equipmentId).positions[equipmentPositionHistory.find((current) => element.id == current.equipmentId).positions.length-1].lat, equipmentPositionHistory.find((current) => element.id == current.equipmentId).positions[0].lon], {icon: icon}).addTo(mymap).on('click', () => selected.value = element.id)
         .bindPopup(descrition)
         .on('mouseover', function (e) {
             this.openPopup();
@@ -118,8 +123,34 @@ export default {
         .on('mouseout', function (e) {
             this.closePopup();
         });
+
+        switch(state) {
+        case "Parado":
+          parado.push(marker);
+          break
+
+        case "Operando":
+          operando.push(marker);
+          break
+
+        case "Manutenção":
+          manutecao.push(marker);
+          break
+      }
+
     });
-  
+
+    const paradoLayer = leaflet.layerGroup(parado)
+    const operandoLayer = leaflet.layerGroup(operando)
+    const manutecaoLayer = leaflet.layerGroup(manutecao)
+
+    var overlayMaps = {
+        "parados": paradoLayer,
+        "operando": operandoLayer,
+        "manuteção": manutecaoLayer
+    };
+
+    var layerControl = leaflet.control.layers(overlayMaps).addTo(mymap);
 
     });
     return {selected}
@@ -127,22 +158,24 @@ export default {
   
 }
 
-
-
 </script>
 
+Componentes Vue ⬇
 
 <template>
    <Navbar />
 
-  <div class="w-screen h-screen pt-28 grid lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-1 gap-10 bg-[url('../background.png')]  bg-slate-900 overflow-hidden">
+    <div class="pt-20 bg-[url('../background.png')] bg-slate-900 w-screen h-screen flex">
+      <div class="mx-auto">
+        <h1 class="lg:text-5xl pt-10 px-16 w-screen text-blue-200 font-bold font-sans text-3xl md:text-5xl text-left justify-left">Monitore a localização, estado e histórico dos equipamentos</h1>
+
+        <div class="w-full h-auto p-16 justify-center grid grid-cols-3 gap-10 ">
    
-    <MyMap class="col-span-2"/>
-    <HelloWorld :selected="selected"/>
-  </div>
-  
-  
-   
+          <MyMap class="lg:col-span-2 col-span-3"/>
+          <HelloWorld class="lg:col-span-1 col-span-3" :selected="selected"/>
+       </div>
+      </div>
+    </div>
 </template>
 
 <style>

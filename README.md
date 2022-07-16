@@ -1,5 +1,5 @@
 
-## A branch onde estão as coisas que eu fiz não é main, é outra com meu nome 
+## A branch onde estão as coisas que eu fiz não é main, é outra com meu nome ⚠
 
 
 Olá, esse foi um teste que fiz para uma vaga de estágio, onde desenvolvi uma página que gerencia máquinas em campo, o objetivo foi mostrar a localização delas, o estado (trabalhando, parada ou em manutenção) e o histórico do estado delas quando clikar na máquina que você quer saber mais.
@@ -11,8 +11,6 @@ Definitivamente a parte das funcionalidades foi onde passei a maioria do tempo, 
 Sobre os extras, os únicos que tive tempo para fazer foi um simples filtro no mapa.
 
 Espero que gostem do resultado 💙
-
-## A branch onde estão as coisas que eu fiz não é main, é outra com meu nome ⚠
 
 ## Tecnologias 🧪
 
